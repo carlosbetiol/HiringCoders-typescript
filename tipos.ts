@@ -18,9 +18,9 @@ jogadores = ["Carlos", "Augusto", "Betiol", "Ramos", true];
 
 // enum (pode ficar sem os valores 001, 002, 003 que vai assumir 0, 1, 2)
 enum StatusAprovacao {
-    Aprovado,
-    Pendente,
-    Rejeitado
+    Aprovado = "001",
+    Pendente = "002",
+    Rejeitado = "003"
 }
 
 const statusDaAprovacao: StatusAprovacao = StatusAprovacao.Aprovado;
@@ -51,4 +51,86 @@ criar({
 //criar('Carlos') // da erro
 
 
+//never
+function loopInfinito(): never {
+    while(true){
+
+    }
+}
+
+function erro(mensagem: string): never {
+    throw new Error(mensagem);
+}
+
+// abaixo a funcao vai acabar sendo never pq o return é do resultado de uma never
+function falha() {
+    return erro('algo falhou');
+}
+
+// Union Types (pode ter mais de um tipo)
+function exibirNota(nota: number | string | boolean) {
+    console.log(`A nota é ${nota}`);
+}
+
+exibirNota('10');
+exibirNota(10);
+exibirNota(true);
+
+// Alias
+type Funcionario = {
+    nome: string,
+    sobrenome: string,
+    dataNascimento: Date
+}
+// Date é só uma interface, nao é tipo
+
+// type Funcionarios = Array<Funcionario>;
+// pode usar type dentro de type
+const funcionarios: Funcionario[] = [{
+    nome: 'Victor',
+    sobrenome: 'Farias',
+    dataNascimento: new Date()
+},
+{
+    nome: 'Fulano',
+    sobrenome: 'Farias',
+    dataNascimento: new Date()
+}];
+
+function tratarFuncionarios(funcionariosP: Funcionario[]) {
+    for(let funcionario of funcionariosP) {
+        console.log('Nome do funcionário: ', funcionario.nome);
+    }
+}
+
+tratarFuncionarios(funcionarios);
+
+// campo Opcional
+let altura: number | null = 1.6;
+altura = null;
+
+type Contato = {
+    nome: string;
+    telefone1: string;
+    telefone2?: string;
+}
+
+const contato: Contato = {
+    nome: 'Victor',
+    telefone1: '46654445'
+}
+// opcional colocar telefone2 que vai ficar undefined
+
+// Type Assertion
+const minhaIdade: any = 23;
+(minhaIdade as number).toString;
+// ou
+<number> minhaIdade.toString;
+
+// abaixo se nao fizer a assertion as HTMLInputElement, o typescript nao vai reconhecer q 
+// existe a prop value pq infere que vai retornar um HTMLElement
+const input = document.getElementById("numero1") as HTMLInputElement;
+// usa acima, ou abaixo
+const input2 = <HTMLInputElement> document.getElementById("numero1");
+console.log(input2.value);
 
